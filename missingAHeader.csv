@@ -1,0 +1,8 @@
+id,product_name,
+132,"Massoub gift card",5.4
+154,"Kebdah gift card",5.4
+12,"Fatayer gift card",1.8
+155,"ali gift card",
+1000,"non numeric",a
+1020,"negative",-1000
+10300,"bool",True
