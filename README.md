@@ -28,11 +28,11 @@ Some tests are not easy to put into unit test, this is a normal part of every ap
 
 Here are the cases,
 1. non csv file:
-![Alt text](relative/path/to/img.jpg?raw=true "Title")
+![Alt text](images/ManualTest1.png?raw=true "Title")
 2. empty csv file:
-![Alt text](relative/path/to/img.jpg?raw=true "Title")
+![Alt text](images/ManualTest2.png?raw=true "Title")
 3. missing header csv file:
-![Alt text](relative/path/to/img.jpg?raw=true "Title")
+![Alt text](images/ManualTest3.png?raw=true "Title")
 
 ## Usage
 
