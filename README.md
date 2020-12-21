@@ -43,6 +43,9 @@ Once the server is running, then you can go to the swagger UI by following the f
 ```
 http://<ip>:8000/docs
 ```
+
+example of a successful run
+![Alt text](images/Successful-run.png?raw=true "Successful run")
 ## Kafka Implementation of the top rating products
 Kafka was used to implement the same functionality as in the fastapi to stream the CSV using a standard Kafka producer and a consumer was developed to process the messages on the other end. 
 Note: the functionality of processing the data in the fastapi implementation was leveraged as well in this solution.
