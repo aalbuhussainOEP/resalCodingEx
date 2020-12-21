@@ -1,9 +1,11 @@
 from typing import Optional
-
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.testclient import TestClient
 import pandas as pd
 import json
+from pathlib import Path
+import pytest
+
 app = FastAPI()
 
 
@@ -74,26 +76,39 @@ async def top_rating_products(csv_file: UploadFile = File(...)):
 ## Unit Testing Section
 client = TestClient(app)
 
-empty_csv = './empty.csv'
-only_headers_csv = './onlyheaders.csv'
-date_csv_filename = "./in.csv"
-not_csv_filename = './noncsv.png'
-missing_needed_header = './missingAHeader.csv'
+# set up for the files used in testing
+empty_csv = Path(__file__).parent / "./resources/empty.csv"
+only_headers_csv = Path(__file__).parent / "./resources/onlyheaders.csv"
+date_csv_filename = Path(__file__).parent / "./resources/in.csv"
 
 
-
-def test_return_max_customer_rating_no_headers():
-    response = client.post("/top-rating-products")
-    assert response.status_code == 422
-    assert response.json() == {"detail":[{"loc":["body","csv_file"],"msg":"field required","type":"value_error.missing"}]}
+def test_return_max_customer_rating_no_headers_no_file():
+	'''
+	Testing the fast api to make sure the csv file is provided.
+	'''
+	response = client.post("/top-rating-products")
+	assert response.status_code == 422
+	assert response.json() == {"detail":[{"loc":["body","csv_file"],"msg":"field required","type":"value_error.missing"}]}
 
 def test_return_max_customer_rating_no_file():
-    response = client.post("/top-rating-products",
-    	headers={"accept": "application/json", "Content-Type": "multipart/form-data"})
-    assert response.status_code == 400
-    assert response.json() == {'detail': 'There was an error parsing the body'}
+	'''
+	Tetsing the missing file again but with headers this time, 
+	this test is to set exceptations on what is returned with we have headers and no file
 
-def test_find_best_rating_products_with_data_sample_1():
+	Note:
+	This test needs the server running otherwise it is going to fail
+	'''
+	response = client.post("/top-rating-products",
+		headers={"accept": "application/json", "Content-Type": "multipart/form-data"})
+	assert response.status_code == 400
+	assert response.json() == {'detail': 'There was an error parsing the body'}
+
+def test_find_best_rating_products_with_file_not_sane_data():
+	'''
+	testing the returned json when we have a file with a mix of data types in the rating.
+	Note:
+	This test needs the server running otherwise it is going to fail.
+	'''
 	actual =  {"id": [132, 154], "product_name": ["Massoub gift card", "Kebdah gift card"], "customer_avrage_rating": ["5.4", "5.4"]}
 	actual = pd.DataFrame(data=actual)
 	expected = find_best_rating_products(csv_file = date_csv_filename)
@@ -101,15 +116,17 @@ def test_find_best_rating_products_with_data_sample_1():
 	print(actual.to_string())
 	assert True == actual.equals(expected)
 
-def test_find_best_rating_products_with_data_sample_2():
+def test_find_best_rating_products_with_headers_only_csv():
+	'''
+	testing that the fuctions still process a header only file and return an empty result.
+	'''
 	expected = find_best_rating_products(csv_file = only_headers_csv)
 	assert True == expected.empty
 
-def test_find_best_rating_products_with_data_sample_3():
-	expected = find_best_rating_products(csv_file = empty_csv)
-	assert True == expected.empty
-
 def test_sanitize_helper():
+	'''
+	testing the helper function that makes sure we sanitiaze the rating column to discard non numeric values.
+	'''
 	x = 10.1
 	assert x == sanitize_helper(x)
 	x = None
@@ -119,4 +136,4 @@ def test_sanitize_helper():
 	x = 'ali'
 	assert 0 == sanitize_helper(x)
 	x = float('NaN')
-	assert 0 -- sanitize_helper(x) 
+	assert 0 -- sanitize_helper(x)
