@@ -79,3 +79,13 @@ Done processing file : in.csv
     "product_rating(s)": "0    5.4\n1    5.4"
 }
 ```
+
+Exception cases examples handed by the producer
+```
+Processing file : empty.csv
+Done processing file : empty.csv
+{'Error': 'problem reading/opening/processing file current-file.csv', 'Exception type': 'EmptyDataError', 'Exception args': ('No columns to parse from file',)}
+Processing file : missingAHeader.csv
+Done processing file : missingAHeader.csv
+{'Error': 'problem reading/opening/processing file current-file.csv', 'Exception type': 'KeyError', 'Exception args': ('customer_avrage_rating',)}
+```
