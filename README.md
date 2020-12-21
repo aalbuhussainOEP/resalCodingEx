@@ -21,18 +21,18 @@ pytest -q csvtojsonapi.py
 Note: unit test require the uvcorn server running the application.  
 
 unit test results
-![Alt text](relative/path/to/img.jpg?raw=true "Title")
+![Alt text](images/unitTest.png?raw=true "UnitTest")
 
 ## Manual Testing
 Some tests are not easy to put into unit test, this is a normal part of every application as they can be covered in automated tests but in out case we just used manual testing to make sure the application is behaving as expected.
 
 Here are the cases,
 1. non csv file:
-![Alt text](images/ManualTest1.png?raw=true "Title")
+![Alt text](images/ManualTest1.png?raw=true "non-csv exception")
 2. empty csv file:
-![Alt text](images/ManualTest2.png?raw=true "Title")
+![Alt text](images/ManualTest2.png?raw=true "empty csv exception")
 3. missing header csv file:
-![Alt text](images/ManualTest3.png?raw=true "Title")
+![Alt text](images/ManualTest3.png?raw=true "corrupt csv file exception")
 
 ## Usage
 
